@@ -1,7 +1,8 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { Animated, PanResponder, Text, TouchableHighlightBase, TouchableOpacity } from 'react-native';
 
 import GridContainer from '../../components/GridContainer';
+import { GameController } from '../../utils/GameController';
 import { mergeRight, mergeLeft, moveDown, moveLeft, moveRight, moveUp, mergeUp, mergeDown } from '../../utils/moves';
 
 import { Container, Data } from './styles';
@@ -15,8 +16,8 @@ const INITIAL_GRID = [
 
 const Game: React.FC = () => {
   const [direction, setDirection] = useState('None');
-  const [grid, setGrid] = useState<number[][]>(INITIAL_GRID);
-  const [score, setScore] = useState(0);
+  const [gameController, setGameController] = useState(new GameController(4));
+
 
   const panResponder = useMemo(() =>
     PanResponder.create({
@@ -27,47 +28,36 @@ const Game: React.FC = () => {
         if (Math.abs(dx) > Math.abs(dy)) {
           if (dx > 0) {
             setDirection('Right');
-            moveRight(grid);
-            const moveScore = mergeRight(grid);
-            setScore(scr => scr + moveScore);
-            moveRight(grid);
+            console.log('grid', gameController._grid);
+            gameController.moveRight();
           } else {
             setDirection('Left');
-            moveLeft(grid);
-            const moveScore = mergeLeft(grid);
-            setScore(scr => scr + moveScore);
-            moveLeft(grid);
+            gameController.moveLeft();
           }
         } else {
           if (dy > 0) {
             setDirection('Down');
-            moveDown(grid);
-            const moveScore = mergeDown(grid);
-            setScore(scr => scr + moveScore);
-            moveDown(grid);
+            gameController.moveDown();
           } else {
             setDirection('Up');
-            moveUp(grid);
-            const moveScore = mergeUp(grid);
-            setScore(scr => scr + moveScore);
-            moveUp(grid);
+            gameController.moveUp();
           }
         }
       }
     })
-    , []);
+    , [gameController]);
 
   return (
     <Container>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => setGameController(new GameController(4))}>
         <Text>New Game</Text>
       </TouchableOpacity>
       <Data>
-        <Text>Score {score}</Text>
+        <Text>Score {gameController._score}</Text>
         <Text>{direction}</Text>
       </Data>
       <Animated.View {...panResponder.panHandlers} style={{ borderWidth: 1, borderColor: '#333' }}>
-        <GridContainer grid={grid} />
+        <GridContainer grid={gameController._grid} />
       </Animated.View>
     </Container>
   );
