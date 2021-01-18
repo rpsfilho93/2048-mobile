@@ -1,11 +1,24 @@
 import { mergeRight, moveRight, moveLeft, mergeLeft, moveUp, mergeUp, moveDown, mergeDown } from "./moves";
 
+const moves = {
+  UP: 'up',
+  DOWN: 'down',
+  RIGHT: 'right',
+  LEFT: 'left',
+}
+
+const INITIAL_GRID = [
+  [0, 0, 0, 0],
+  [0, 0, 0, 0],
+  [0, 0, 0, 0],
+  [0, 0, 0, 0],
+];
+
 export class GameController {
   _grid: number[][];
   _gridSize: number;
   _score: number;
   _gameOver: boolean;
-
 
   constructor(gridSize: number) {
     let initialGrid: number[][] = [];
@@ -18,9 +31,7 @@ export class GameController {
       initialGrid.push(row);
     }
 
-    console.log('initialGrid', initialGrid);
-
-    this._grid = initialGrid;
+    this._grid = INITIAL_GRID.map(row => row.slice());
     this._gridSize = gridSize;
     this._score = 0;
     this._gameOver = false;
@@ -30,45 +41,56 @@ export class GameController {
   }
 
   private addRandomCell() {
-    let randomX: number;
-    let randomY: number;
+    const emptyCells: { x: number, y: number }[] = [];
 
-    do {
-      randomX = Math.floor((Math.random() * this._gridSize));
-      randomY = Math.floor((Math.random() * this._gridSize));
-    } while (this._grid[randomY][randomX] !== 0)
+    this._grid.forEach((row, i) =>
+      row.forEach((cell, j) => {
+        if (cell === 0) {
+          emptyCells.push({ x: i, y: j });
+        }
+      }
+      ),
+    );
+
+    const randomIndexPosition = Math.floor((Math.random() * emptyCells.length));
+
+    const randomPosition = emptyCells[randomIndexPosition];
 
     const notRandomNumbers = [2, 2, 2, 2, 2, 2, 2, 2, 2, 4];
     const randomIndex = Math.floor(Math.random() * notRandomNumbers.length);
 
-    this._grid[randomX][randomY] = notRandomNumbers[randomIndex];
+    this._grid[randomPosition.x][randomPosition.y] = notRandomNumbers[randomIndex];
   }
 
-  moveRight() {
-    moveRight(this._grid);
-    const moveScore = mergeRight(this._grid);
-    this._score += moveScore;
-    moveRight(this._grid);
-  }
+  nextMove(move: 'up' | 'down' | 'right' | 'left') {
+    let nextGrid = this._grid.map(row => row.slice());
 
-  moveLeft() {
-    moveLeft(this._grid);
-    const moveScore = mergeLeft(this._grid);
-    this._score += moveScore;
-    moveLeft(this._grid);
-  }
+    switch (move) {
+      case moves.UP:
+        moveUp(nextGrid);
+        this._score += mergeUp(nextGrid);
+        moveUp(nextGrid);
+        break;
+      case moves.DOWN:
+        console.log('nextGrid', nextGrid);
+        moveDown(nextGrid);
+        this._score += mergeDown(nextGrid);
+        moveDown(nextGrid);
+        break;
+      case moves.RIGHT:
+        moveRight(nextGrid);
+        this._score += mergeRight(nextGrid);
+        moveRight(nextGrid);
+        break;
+      case moves.LEFT:
+        moveLeft(nextGrid);
+        this._score += mergeLeft(nextGrid);
+        moveLeft(nextGrid);
+    }
 
-  moveUp() {
-    moveUp(this._grid);
-    const moveScore = mergeUp(this._grid);
-    this._score += moveScore;
-    moveUp(this._grid);
-  }
-
-  moveDown() {
-    moveDown(this._grid);
-    const moveScore = mergeDown(this._grid);
-    this._score += moveScore;
-    moveDown(this._grid);
+    if (nextGrid.toString() !== this._grid.toString()) {
+      this._grid = nextGrid.map(row => row.slice());
+      this.addRandomCell();
+    }
   }
 }

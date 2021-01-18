@@ -26,13 +26,15 @@ export const mergeUp = (grid: number[][]) => {
   for (let i = 0; i < grid.length; i += 1) {
     const tmp: number[] = [];
     for (let j = 0; j < grid.length; j += 1) {
-      if (grid[j][i] === 0) break;
-
-      if (grid[j][i] === grid[j + 1][i]) {
+      if ((j + 1) < grid.length && grid[j][i] === grid[j + 1][i]) {
         score += grid[j][i] * 2;
         tmp.push(grid[j][i] * 2);
         grid[j][i] = 0;
         grid[j + 1][i] = 0;
+        j += 1;
+      } else {
+        tmp.push(grid[j][i])
+        grid[j][i] = 0;
       }
     }
 
@@ -69,21 +71,48 @@ export const moveDown = (grid: number[][]) => {
 
 export const mergeDown = (grid: number[][]) => {
   let score = 0;
-  for (let i = grid.length - 1; i >= 0; i -= 1) {
+  for (let i = 0; i < grid.length; i += 1) {
     const tmp: number[] = [];
     for (let j = grid.length - 1; j >= 0; j -= 1) {
-      if (grid[j][i] === 0) break;
-
-      if (grid[j][i] === grid[j - 1][i]) {
+      if (j - 1 >= 0 && grid[j][i] === grid[j - 1][i]) {
         score += grid[j][i] * 2;
         tmp.unshift(grid[j][i] * 2);
         grid[j][i] = 0;
         grid[j - 1][i] = 0;
+        j -= 1;
+      } else {
+        tmp.unshift(grid[j][i]);
+        grid[j][i] = 0;
       }
     }
 
-    for (let k = tmp.length; k >= 0; k -= 1) {
+    for (let k = 0; k < tmp.length; k += 1) {
       grid[k][i] = tmp[k];
+    }
+  }
+
+  return score;
+}
+
+export const mergeLeft = (grid: number[][]) => {
+  let score = 0;
+  for (let i = 0; i < grid.length; i += 1) {
+    const tmp: number[] = [];
+    for (let j = 0; j < grid.length - 1; j += 1) {
+      if (grid[i][j] > 0 && grid[i][j] === grid[i][j + 1]) {
+        score += grid[i][j] * 2;
+        tmp.push(grid[i][j] * 2);
+        grid[i][j] = 0;
+        grid[i][j + 1] = 0;
+        j += 1;
+      } else {
+        tmp.push(grid[i][j]);
+        grid[i][j] = 0;
+      }
+    }
+
+    for (let k = 0; k < tmp.length; k += 1) {
+      grid[i][k] = tmp[k];
     }
   }
 
@@ -111,28 +140,6 @@ export const moveLeft = (grid: number[][]) => {
   }
 };
 
-export const mergeLeft = (grid: number[][]) => {
-  let score = 0;
-  for (let i = 0; i < grid.length; i += 1) {
-    const tmp: number[] = [];
-    for (let j = 0; j < grid.length; j += 1) {
-      if (grid[i][j] === 0) break;
-
-      if (grid[i][j] === grid[i][j + 1]) {
-        score += grid[i][j] * 2;
-        tmp.push(grid[i][j] * 2);
-        grid[i][j] = 0;
-        grid[i][j + 1] = 0;
-      }
-    }
-
-    for (let k = 0; k < tmp.length; k += 1) {
-      grid[i][k] = tmp[k];
-    }
-  }
-
-  return score;
-}
 
 export const moveRight = (grid: number[][]) => {
   for (let i = 0; i < grid.length; i += 1) {
@@ -158,16 +165,18 @@ export const moveRight = (grid: number[][]) => {
 
 export const mergeRight = (grid: number[][]) => {
   let score = 0;
-  for (let i = grid.length - 1; i >= 0; i -= 1) {
+  for (let i = 0; i < grid.length; i += 1) {
     const tmp: number[] = [];
     for (let j = grid.length - 1; j >= 0; j -= 1) {
-      if (grid[i][j] === 0) break;
-
-      if (grid[i][j] === grid[i][j - 1]) {
+      if (grid[i][j] > 0 && grid[i][j] === grid[i][j - 1]) {
         score += grid[i][j] * 2;
         tmp.unshift(grid[i][j] * 2);
         grid[i][j] = 0;
         grid[i][j - 1] = 0;
+        j -= 1;
+      } else {
+        tmp.unshift(grid[i][j]);
+        grid[i][j] = 0;
       }
     }
 
