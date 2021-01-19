@@ -41,7 +41,7 @@ export class GameController {
   }
 
   private addRandomCell() {
-    const emptyCells: { x: number, y: number }[] = [];
+    let emptyCells: { x: number, y: number }[] = [];
 
     this._grid.forEach((row, i) =>
       row.forEach((cell, j) => {
@@ -51,6 +51,8 @@ export class GameController {
       }
       ),
     );
+
+    console.log('emptyCells', emptyCells.length);
 
     const randomIndexPosition = Math.floor((Math.random() * emptyCells.length));
 
@@ -62,35 +64,63 @@ export class GameController {
     this._grid[randomPosition.x][randomPosition.y] = notRandomNumbers[randomIndex];
   }
 
-  nextMove(move: 'up' | 'down' | 'right' | 'left') {
-    let nextGrid = this._grid.map(row => row.slice());
+  private checkGameOver(): boolean {
+    for (let i = 0; i < this._grid.length; i += 1) {
+      for (let j = 0; j < this._grid.length; j += 1) {
+        if (this._grid[i][j] === 0) {
+          return false;
+        }
 
-    switch (move) {
-      case moves.UP:
-        moveUp(nextGrid);
-        this._score += mergeUp(nextGrid);
-        moveUp(nextGrid);
-        break;
-      case moves.DOWN:
-        console.log('nextGrid', nextGrid);
-        moveDown(nextGrid);
-        this._score += mergeDown(nextGrid);
-        moveDown(nextGrid);
-        break;
-      case moves.RIGHT:
-        moveRight(nextGrid);
-        this._score += mergeRight(nextGrid);
-        moveRight(nextGrid);
-        break;
-      case moves.LEFT:
-        moveLeft(nextGrid);
-        this._score += mergeLeft(nextGrid);
-        moveLeft(nextGrid);
+        if ((j + 1) < this._grid.length &&
+          this._grid[i][j] === this._grid[i][j + 1]) {
+          return false;
+
+        }
+
+        if ((i + 1) < this._grid.length &&
+          this._grid[i][j] === this._grid[i + 1][j]) {
+          return false;
+        }
+      }
     }
 
-    if (nextGrid.toString() !== this._grid.toString()) {
-      this._grid = nextGrid.map(row => row.slice());
-      this.addRandomCell();
+    return true;
+  }
+
+  nextMove(move: 'up' | 'down' | 'right' | 'left') {
+    if (!this._gameOver) {
+
+      let nextGrid = this._grid.map(row => row.slice());
+
+      switch (move) {
+        case moves.UP:
+          moveUp(nextGrid);
+          this._score += mergeUp(nextGrid);
+          moveUp(nextGrid);
+          break;
+        case moves.DOWN:
+          moveDown(nextGrid);
+          this._score += mergeDown(nextGrid);
+          moveDown(nextGrid);
+          break;
+        case moves.RIGHT:
+          moveRight(nextGrid);
+          this._score += mergeRight(nextGrid);
+          moveRight(nextGrid);
+          break;
+        case moves.LEFT:
+          moveLeft(nextGrid);
+          this._score += mergeLeft(nextGrid);
+          moveLeft(nextGrid);
+      }
+
+      if (nextGrid.toString() !== this._grid.toString()) {
+        this._grid = nextGrid.map(row => row.slice());
+        this.addRandomCell();
+        this._gameOver = this.checkGameOver();
+      }
     }
   }
+
+
 }

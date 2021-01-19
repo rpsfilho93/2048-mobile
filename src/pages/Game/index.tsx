@@ -24,23 +24,26 @@ const Game: React.FC = () => {
       onPanResponderRelease: (e, gestureState) => {
         const { dx, dy } = gestureState;
 
-        if (Math.abs(dx) > Math.abs(dy)) {
-          if (Math.abs(dx) > 100) {
-            if (dx > 0) {
-              gameController.nextMove('right');
-            } else {
-              gameController.nextMove('left');
+        if (!gameController._gameOver) {
+
+          if (Math.abs(dx) > Math.abs(dy)) {
+            if (Math.abs(dx) > 100) {
+              if (dx > 0) {
+                gameController.nextMove('right');
+              } else {
+                gameController.nextMove('left');
+              }
+              setTurn(trn => trn + 1);
             }
-            setTurn(trn => trn + 1);
-          }
-        } else {
-          if (Math.abs(dy) > 100) {
-            if (dy > 0) {
-              gameController.nextMove('down');
-            } else {
-              gameController.nextMove('up');
+          } else {
+            if (Math.abs(dy) > 100) {
+              if (dy > 0) {
+                gameController.nextMove('down');
+              } else {
+                gameController.nextMove('up');
+              }
+              setTurn(trn => trn + 1);
             }
-            setTurn(trn => trn + 1);
           }
         }
       }
@@ -65,6 +68,7 @@ const Game: React.FC = () => {
       <Animated.View {...panResponder.panHandlers} style={{ borderWidth: 1, borderColor: '#333' }}>
         <GridContainer grid={gameController._grid} />
       </Animated.View>
+      {gameController._gameOver && <Text>Game Over</Text>}
     </Container>
   );
 }
