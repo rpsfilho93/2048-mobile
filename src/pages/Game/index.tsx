@@ -1,11 +1,11 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { Animated, PanResponder, Text, TouchableHighlightBase, TouchableOpacity } from 'react-native';
 
-import GridContainer from '../../components/GridContainer';
+import Grid from '../../components/Grid';
 import { GameController } from '../../utils/GameController';
 import { mergeRight, mergeLeft, moveDown, moveLeft, moveRight, moveUp, mergeUp, mergeDown } from '../../utils/moves';
 
-import { Container, Data } from './styles';
+import { Container, Data, GridContainer } from './styles';
 
 const INITIAL_GRID = [
   [0, 0, 0, 0],
@@ -50,10 +50,9 @@ const Game: React.FC = () => {
     })
     , [gameController]);
 
-
   const handleNewGame = useCallback(() => {
     setGameController(new GameController(4));
-    setTurn(1);
+    setTurn(trn => 1);
   }, []);
 
   return (
@@ -65,9 +64,9 @@ const Game: React.FC = () => {
         <Text>Score {gameController._score}</Text>
         <Text>Turn {turn}</Text>
       </Data>
-      <Animated.View {...panResponder.panHandlers} style={{ borderWidth: 1, borderColor: '#333' }}>
-        <GridContainer grid={gameController._grid} />
-      </Animated.View>
+      <GridContainer {...panResponder.panHandlers} >
+        <Grid grid={gameController._grid} />
+      </ GridContainer>
       {gameController._gameOver && <Text>Game Over</Text>}
     </Container>
   );

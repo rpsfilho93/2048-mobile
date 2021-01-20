@@ -1,5 +1,6 @@
 import React from 'react';
-import { Container, Value } from './styles';
+import InnerTile from '../InnerTile';
+import { Container } from './styles';
 
 interface CellGridProps {
   value: number;
@@ -8,7 +9,7 @@ interface CellGridProps {
 const CellGrid: React.FC<CellGridProps> = ({ value }) => {
   return (
     <Container>
-      <Value>{value}</Value>
+      {<InnerTile value={value} />}
     </Container>
   );
 };

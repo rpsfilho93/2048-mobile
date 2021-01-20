@@ -52,8 +52,6 @@ export class GameController {
       ),
     );
 
-    console.log('emptyCells', emptyCells.length);
-
     const randomIndexPosition = Math.floor((Math.random() * emptyCells.length));
 
     const randomPosition = emptyCells[randomIndexPosition];

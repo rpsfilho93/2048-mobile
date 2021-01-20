@@ -1,8 +1,8 @@
 import styled from 'styled-components/native';
 
 export const Container = styled.View`
-  width: 322px;
-  height: 322px;
+  width: 320px;
+  height: 320px;
   flex-wrap: wrap;
   flex-direction: row;
 `;

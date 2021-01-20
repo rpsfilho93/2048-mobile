@@ -1,6 +1,6 @@
 import React from 'react';
 
-import CellGrid from '../CellGrid';
+import GridCell from '../GridCell';
 
 import { Container } from './styles';
 
@@ -13,16 +13,16 @@ interface GridProps {
   grid: number[][];
 }
 
-const GridContainer: React.FC<GridProps> = ({ grid }) => {
+const Grid: React.FC<GridProps> = ({ grid }) => {
 
   return (
     <Container>
       {grid?.map((row, i) =>
         row.map((value, j) =>
-          <CellGrid key={`${i}-${j}`} value={value} />
+          <GridCell key={`${i}-${j}`} value={value} />
         ))}
     </Container>
   );
 };
 
-export default GridContainer;
+export default Grid;

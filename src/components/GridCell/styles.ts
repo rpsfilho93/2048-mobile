@@ -7,9 +7,9 @@ export const Container = styled.View`
   align-items: center;
   justify-content: center;
 
+  border: 4px;
+  border-color: #BBADA0;
+
+  background-color: #ccccccbb;
 `;
 
-export const Value = styled.Text`
-  color: #333;
-  font-size: 16px;
-`;
