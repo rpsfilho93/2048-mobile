@@ -7,8 +7,8 @@ interface TileProps {
 
 const backgroundColors = {
   0: css`
-      background-color: rgba(238, 228, 218, 0.35);
-      `,
+      background-color: #cccccc;
+    `,
   2: css`
       background-color: #eee4da;      
       color: #776E65;
@@ -58,10 +58,10 @@ const backgroundColors = {
 export const Container = styled(Animated.View) <TileProps>`
   width: 72px;
   height: 72px;
-
   align-items: center;
   justify-content: center;
-  background-color: 'rgba(238, 228, 218, 0.35)';
+  
+  border-radius: 6px;
 
   ${props => backgroundColors[props.value]}
 `;

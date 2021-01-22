@@ -136,10 +136,9 @@ export const moveLeft = (grid: number[][]) => {
       tmp.push(0);
     }
 
-    grid[i] = tmp;
+    grid[i] = tmp.slice();
   }
 };
-
 
 export const moveRight = (grid: number[][]) => {
   for (let i = 0; i < grid.length; i += 1) {
@@ -158,8 +157,7 @@ export const moveRight = (grid: number[][]) => {
       tmp.unshift(0);
     }
 
-
-    grid[i] = tmp;
+    grid[i] = tmp.slice();
   }
 };
 

@@ -31,7 +31,7 @@ export class GameController {
       initialGrid.push(row);
     }
 
-    this._grid = INITIAL_GRID.map(row => row.slice());
+    this._grid = initialGrid.map(row => row.slice());
     this._gridSize = gridSize;
     this._score = 0;
     this._gameOver = false;
@@ -44,8 +44,8 @@ export class GameController {
     let emptyCells: { x: number, y: number }[] = [];
 
     this._grid.forEach((row, i) =>
-      row.forEach((cell, j) => {
-        if (cell === 0) {
+      row.forEach((tile, j) => {
+        if (tile === 0) {
           emptyCells.push({ x: i, y: j });
         }
       }
@@ -56,10 +56,10 @@ export class GameController {
 
     const randomPosition = emptyCells[randomIndexPosition];
 
-    const notRandomNumbers = [2, 2, 2, 2, 2, 2, 2, 2, 2, 4];
-    const randomIndex = Math.floor(Math.random() * notRandomNumbers.length);
+    const randomValues = [2, 2, 2, 2, 2, 2, 2, 2, 2, 4];
+    const randomIndex = Math.floor(Math.random() * randomValues.length);
 
-    this._grid[randomPosition.x][randomPosition.y] = notRandomNumbers[randomIndex];
+    this._grid[randomPosition.x][randomPosition.y] = randomValues[randomIndex];
   }
 
   private checkGameOver(): boolean {
