@@ -11,3 +11,14 @@ export const Container = styled.View`
   border-width: 6px;
 `;
 
+export const Frame = styled.View`
+  width: 72px;
+  height: 72px;
+  align-items: center;
+  justify-content: center;
+
+  background-color: #cccccc;
+
+  border-radius: 6px;
+`;
+

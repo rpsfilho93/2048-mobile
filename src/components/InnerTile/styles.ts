@@ -7,7 +7,7 @@ interface TileProps {
 
 const backgroundColors = {
   0: css`
-      background-color: #cccccc;
+      opacity: 0;
     `,
   2: css`
       background-color: #eee4da;      

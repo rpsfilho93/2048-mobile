@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Animated } from 'react-native';
 import InnerTile from '../InnerTile';
-import { Container } from './styles';
+import { Container, Frame } from './styles';
 
 interface CellGridProps {
   value: number;
@@ -19,7 +19,9 @@ const GridCell: React.FC<CellGridProps> = ({ value }) => {
 
   return (
     <Container>
-      <InnerTile value={value} />
+      <Frame>
+        <InnerTile value={value} />
+      </Frame>
     </Container>
   );
 };
